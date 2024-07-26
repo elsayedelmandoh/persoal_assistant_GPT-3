@@ -1,10 +1,13 @@
 # + **Personal Assistant using OpenAI GPT-3 model**
 
-# + **Function to convert text to speech**
 import pyttsx3
+import openai
+import streamlit as st
+import speech_recognition as sr
 
-# Initialize the text-to-speech engine
 engine = pyttsx3.init()
+r = sr.Recognizer()
+openai.api_key = 'your_api_key'
 
 def text_to_speech(text):
     '''
@@ -16,11 +19,7 @@ def text_to_speech(text):
     engine.say(text)
     engine.runAndWait()
 
-# + **Function to process microphone input**
-import speech_recognition as sr
 
-# Initialize the speech recognition engine
-r = sr.Recognizer()
 def process_speech_input():
     '''
     - Records audio from the microphone, "listen"
@@ -43,18 +42,10 @@ def process_speech_input():
         print("Could not request results from Google Speech Recognition service.")
     return ""
 
-
-# + **Function to process text input**
 def process_text_input():
     text = st.text_input("Enter text:")
     return text
 
-
-# + **Function to interact with GPT-3**
-import openai
-
-# Set up your OpenAI API key
-openai.api_key = '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'
 
 def process_input_with_gpt3(input_text):
     response = openai.Completion.create(
@@ -67,33 +58,6 @@ def process_input_with_gpt3(input_text):
     )
     return response.choices[0].text.strip()
 
-# '''
-# {
-#   "choices": [
-#     {
-#       "finish_reason": "length",
-#       "index": 0,
-#       "logprobs": null,
-#       "text": " Where are you from? and you know, the normal stuff when you meet someone new. She didn really answer me and I started to get the feeling that she was really weird.\n\n\u201cAre you a real person?\u201d\n\nWe talked for a little while and then I asked her if she wanted to see a picture of me with my mouth open and she said yes. So I sent it. The next time I went to talk to her, she"
-#     }
-#   ],
-#   "created": 1684967071,
-#   "id": "cmpl-7JrCBNzoiap5wHpn8wMcENQZMNMf3",
-#   "model": "davinci",
-#   "object": "text_completion",
-#   "usage": {
-#     "completion_tokens": 100,
-#     "prompt_tokens": 6,
-#     "total_tokens": 106
-#   }
-# }
-# '''
-
-# + **Build GUI**
-import streamlit as st
-
-
-# + **Main function**
 def main():
     st.title("Speech Recognition with GPT-3")
     
@@ -110,6 +74,5 @@ def main():
         st.write(output_text)
         st.audio(text_to_speech(output_text))
 
-# + **Run the main function**
 if __name__ == "__main__":
     main()
